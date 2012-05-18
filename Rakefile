@@ -12,7 +12,6 @@
 $LOAD_PATH.unshift('lib')
 
 require 'meta_project'
-require 'rake/gempackagetask'
 require 'rake/contrib/xforge'
 require 'rake/clean'    
 require 'rake/testtask'
@@ -48,16 +47,6 @@ Rake::TestTask.new do |test|
   test.libs << "test"
   test.test_files = Dir[ "test/test_*.rb" ]
   test.verbose = true
-end
-
-mkdir_p "pkg"
-spec = eval(File.read("pdf-writer.gemspec"))
-desc "Build the RubyGem for PDF::Writer"
-task :gem => [ :test ]
-Rake::GemPackageTask.new(spec) do |g|
-  g.need_tar    = false
-  g.need_zip    = false
-  g.package_dir = "pkg"
 end
 
 desc "Look for TODO and FIXME tags in the code"
@@ -166,15 +155,6 @@ file TARDIST => [ :test ] do |t|
   end
 end
 task TARDIST => [ :test ]
-
-desc "Build the RDoc documentation for PDF::Writer"
-task :docs do
-  require 'rdoc/rdoc'
-  rdoc_options = %w(--title PDF::Writer --main README --line-numbers)
-  files = FileList[*%w(README LICENCE ChangeLog bin/**/*.rb lib/**/*.rb demo/**/*.rb)]
-  rdoc_options += files.to_a
-  RDoc::RDoc.new.document(rdoc_options)
-end
 
 task :verify_rubyforge do
   raise "RUBYFORGE_USER environment variable not set!" unless ENV['RUBYFORGE_USER']
