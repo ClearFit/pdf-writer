@@ -591,7 +591,7 @@ module PDF::Writer::Graphics
     end
 
     width  ||= height / image_info.height.to_f * image_info.width
-    height ||= width * image_info.height / image_info.width.to_f
+    height ||= width * image_info.height.to_f / image_info.width.to_f
 
     tt = "\nq\n%.3f 0 0 %.3f %.3f %.3f cm\n/%s Do\nQ"
     add_content(tt % [ width, height, x, y, label ])
